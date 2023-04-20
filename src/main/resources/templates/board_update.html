@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head th:insert="_inc/title.html">
+	
+</head>
+<body>
+
+	<div id="wrap">
+	<!-- HEADER BEGIN -->
+		<header class="sub" th:insert="_inc/header.html">
+		</header>
+	<!-- HEADER END -->
+
+	<!-- CONTENTS BEGIN -->
+		<div id="sub_contents" class="board head_mg mb140">
+			<form id="frm" th:action="@{/board/update/{id}(id = ${board.id})}" method="post" enctype="multipart/form-data">
+				<div class="navi">
+					<div class="top_navi"><a href="/board/list"><img src="/_img/_img/cont/navi_arrow.png"></a><h2>게시물 작성</h2></div>
+				</div>
+				<div class="bbs_write w_box top no_line">
+					<p class="path mb10">자유게시판</p>
+					
+					<input th:value="${board.title}" id="title" name="title" type="text" placeholder="게시물 제목 입력" class="mb10"/>
+					<textarea th:text="${board.content}" id="content" name="content" rows="10" placeholder="게시물 내용 입력"></textarea>
+					
+					<div class="add_photo">
+						<p>이미지 수정: <input type="file" id="file" name="file"></p>			
+						<input th:if="${board.filepath}" name="filepath" type="hidden" th:value="${board.filepath}" readonly>
+					</div>
+					<p>현 사진: <input name="filename" type="text" th:value="${board.filename}" readonly></p>
+					<div class="add_photo">
+						<p><img th:if="${board.filepath}" th:src="@{${board.filepath}}" style="width:160px; height:120px"></p>
+					</div>
+					<p class="btn mt10"><a href="javascript:fn_submit()" id="submit" >작성완료</a></p>
+				</div>
+				
+				<div class="bottom_menu" th:insert="_inc/bottom_menu.html"></div>
+			</form>
+		</div>
+	<!-- CONTENTS END -->
+
+	<!-- POPUP BEGIN -->
+	<!-- 작성완료 선택 시 노출 -->
+	<div class="layer" id="ok_Pop">
+		<div class="bg"></div>
+		<div class="pop-layer" id="okPop">
+			<div class="pop_cont text">
+				<p class="tit c">게시물 수정 완료</p>
+				<p class="mb20 c">수정하시겠습니까?</p>
+				<p class="btn"><a href="javascript:submit_com()">확인</a></p>
+			</div> 
+		</div>
+	</div>
+	<!-- POPUP END -->
+
+</div>
+<!-- //wrap -->
+<script>
+	function fn_submit(){
+		if($("#title").val().trim()==""){
+			alert("제목을 입력해주세요.");
+			$("#title").focus();
+			return false;
+		}
+		if($("#content").val().trim()==""){
+			alert("내용을 입력해주세요.");
+			$("#content").focus();
+			return false;
+		} else{
+			$("#ok_Pop").fadeIn();
+		}
+	}
+	
+	function submit_com(){
+		$("#frm").submit();
+	}
+</script>
+</body>
+</html>
+
+
